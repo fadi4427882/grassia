@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gracia Kitchen | منشئ وصفات الطبخ الاحترافي</title>
+    <meta name="description" content="أنشئ كتب وصفات طبخ احترافية قابلة للطباعة بتصميم فاخر">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;800&family=Tajawal:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     PASSWORD GATE
+═══════════════════════════════════════════════════════════ -->
+    <div id="pw-overlay" class="pw-overlay">
+        <div class="pw-stars"></div>
+        <div class="pw-card">
+            <div class="pw-icon">
+                <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                    <circle cx="28" cy="28" r="27" stroke="#C9A14A" stroke-width="1.5" />
+                    <text x="28" y="37" text-anchor="middle" font-size="24" fill="#C9A14A" font-family="serif">🍽</text>
+                </svg>
+            </div>
+            <h1>Gracia Kitchen</h1>
+            <p>منشئ وصفات الطبخ الاحترافي</p>
+            <div class="pw-field">
+                <input type="password" id="pw-input" placeholder="كلمة المرور"
+                    onkeydown="if(event.key==='Enter')unlockApp()">
+                <button class="pw-eye-btn" onclick="togglePw()" type="button">👁</button>
+            </div>
+            <p id="pw-err" class="pw-err">كلمة المرور غير صحيحة</p>
+            <button class="pw-btn" onclick="unlockApp()">دخول المطبخ</button>
+            <div class="pw-sig">by <strong>Fadi.DEV</strong> · Gracia Studio</div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     TOP TOOLBAR
+═══════════════════════════════════════════════════════════ -->
+    <header class="app-header no-print">
+        <div class="header-brand">
+            <span class="header-logo">🍽</span>
+            <span class="header-name">Gracia Kitchen</span>
+        </div>
+
+        <div class="header-book-info">
+            <input type="text" id="book-name" class="book-name-inp" placeholder="اسم كتاب الوصفات..."
+                value="كتاب الوصفات الملكي">
+            <input type="text" id="book-author" class="book-author-inp" placeholder="اسم المؤلف..." value="">
+        </div>
+
+        <div class="header-actions">
+            <div class="stat-pill" id="stat-pill">٠ وصفة</div>
+            <button class="hdr-btn" onclick="openSettings()" title="الإعدادات">⚙️</button>
+            <button class="hdr-btn" onclick="saveProject()" title="حفظ">💾</button>
+            <button class="hdr-btn" onclick="openArchive()" title="الأرشيف">🗄️</button>
+            <button class="hdr-btn-primary" onclick="exportPDF()">🖨️ طباعة PDF</button>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SETTINGS PANEL (Drawer)
+═══════════════════════════════════════════════════════════ -->
+    <div id="settings-drawer" class="settings-drawer no-print">
+        <div class="drawer-header">
+            <span>إعدادات الكتاب</span>
+            <button onclick="closeSettings()">✕</button>
+        </div>
+        <div class="drawer-body">
+            <label class="drw-label">حجم الصفحة</label>
+            <div class="drw-pills">
+                <button class="size-pill active" id="sz-a4" onclick="setSize('a4')">A4</button>
+                <button class="size-pill" id="sz-a5" onclick="setSize('a5')">A5</button>
+            </div>
+
+            <label class="drw-label">لون مميز</label>
+            <div class="accent-grid">
+                <div class="ac-dot ac-gold" onclick="setAccent('#C9A14A','gold')" title="ذهبي"></div>
+                <div class="ac-dot ac-green" onclick="setAccent('#2D6A4F','green')" title="أخضر"></div>
+                <div class="ac-dot ac-red" onclick="setAccent('#9B2335','red')" title="أحمر"></div>
+                <div class="ac-dot ac-blue" onclick="setAccent('#1B4F72','blue')" title="أزرق"></div>
+                <div class="ac-dot ac-purple" onclick="setAccent('#6C3483','purple')" title="بنفسجي"></div>
+                <div class="ac-dot ac-mocha" onclick="setAccent('#5D4037','mocha')" title="موكا"></div>
+            </div>
+
+            <label class="drw-label">الخط</label>
+            <select class="drw-select" id="font-select" onchange="setFont(this.value)">
+                <option value="Amiri">Amiri — كلاسيكي</option>
+                <option value="Cairo">Cairo — عصري</option>
+                <option value="Tajawal">Tajawal — أنيق</option>
+            </select>
+
+            <label class="drw-label">خلفية الصفحة</label>
+            <div class="bg-grid">
+                <div class="bg-swatch bg-parchment active" onclick="setPageBgStyle('parchment')" title="رقّي"></div>
+                <div class="bg-swatch bg-white" onclick="setPageBgStyle('white')" title="أبيض"></div>
+                <div class="bg-swatch bg-cream" onclick="setPageBgStyle('cream')" title="كريمي"></div>
+                <div class="bg-swatch bg-linen" onclick="setPageBgStyle('linen')" title="كتاني"></div>
+            </div>
+
+            <label class="drw-label" style="margin-top:16px;">شعار الكتاب</label>
+            <label class="drw-upload-btn" for="logo-inp">📷 رفع الشعار
+                <input type="file" id="logo-inp" accept="image/*" onchange="setLogo(this)" style="display:none">
+            </label>
+
+            <label class="drw-label" style="margin-top:10px;">علامة مائية</label>
+            <label class="drw-upload-btn" for="wm-inp">💧 رفع العلامة المائية
+                <input type="file" id="wm-inp" accept="image/*" onchange="setWatermark(this)" style="display:none">
+            </label>
+
+            <label class="drw-label" style="margin-top:10px;">هامش تجليد (35mm)</label>
+            <label class="drw-toggle">
+                <input type="checkbox" id="gutter-chk" onchange="applyGutter()"> تفعيل الهامش
+            </label>
+
+            <label class="drw-label" style="margin-top:16px;">اسم الشركة (على كل صفحة)</label>
+            <input type="text" id="company-name-inp" class="drw-select"
+                placeholder="Gracia Kitchen"
+                value="Gracia Kitchen"
+                oninput="updateCompanyBranding()"
+                style="font-family:'Amiri',serif;font-size:14px;">
+        </div>
+    </div>
+    <div class="drawer-overlay" id="drawer-overlay" onclick="closeSettings()"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     MAIN WORKSPACE
+═══════════════════════════════════════════════════════════ -->
+    <main class="workspace" id="workspace">
+
+        <!-- BOOK COVER -->
+        <section class="book-page cover-page" id="cover-page">
+            <label class="cover-bg-btn no-print" for="cover-bg-inp" title="خلفية الغلاف">🖼 خلفية</label>
+            <input type="file" id="cover-bg-inp" accept="image/*" onchange="setCoverBg(this)" style="display:none">
+            <div class="cover-overlay"></div>
+            <div class="cover-body">
+                <img id="cover-logo" class="cover-logo" src="" alt="" style="display:none">
+                <div class="cover-top-line"></div>
+                <input type="text" class="cover-title-inp" id="cover-title" placeholder="عنوان كتاب الوصفات"
+                    value="كتاب الوصفات الملكي" spellcheck="false">
+                <div class="cover-divider">
+                    <span>✦</span>
+                </div>
+                <input type="text" class="cover-subtitle-inp" id="cover-subtitle" placeholder="وصف مختصر أو شعار"
+                    spellcheck="false">
+                <input type="text" class="cover-author-inp" id="cover-author-name" placeholder="اسم الطاهية / المؤلف"
+                    spellcheck="false">
+                <div class="cover-bottom-line"></div>
+            </div>
+        </section>
+
+        <!-- DYNAMIC RECIPE PAGES -->
+        <div id="pages-container"></div>
+
+        <!-- BACK COVER -->
+        <section class="book-page back-cover-page" id="back-cover">
+            <label class="cover-bg-btn no-print" for="back-bg-inp" title="خلفية خلفية">🖼 خلفية</label>
+            <input type="file" id="back-bg-inp" accept="image/*" onchange="setBackCoverBg(this)" style="display:none">
+            <div class="cover-overlay"></div>
+            <div class="back-cover-body">
+                <div class="bc-placeholder no-print" id="bc-hint">
+                    <div style="font-size:36px;">📸</div>
+                    <p>اضغط "خلفية" لإضافة صورة الغلاف الخلفي</p>
+                </div>
+                <div class="bc-text-area">
+                    <textarea class="bc-desc" placeholder="وصف الكتاب أو كلمة الختام..." spellcheck="false"
+                        rows="4"></textarea>
+                    <input type="text" class="bc-isbn" placeholder="رقم ISBN / الإيداع" style="direction:ltr;"
+                        spellcheck="false">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FAB: Add Recipe -->
+    <button class="fab-add no-print" onclick="addRecipe()" title="إضافة وصفة جديدة">
+        <span class="fab-icon">+</span>
+        <span class="fab-label">وصفة جديدة</span>
+    </button>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     ARCHIVE MODAL
+═══════════════════════════════════════════════════════════ -->
+    <div id="archive-modal" class="modal-backdrop no-print" style="display:none">
+        <div class="modal-box">
+            <div class="modal-top">
+                <h2>🗄️ أرشيف المشاريع</h2>
+                <button onclick="closeArchive()">✕</button>
+            </div>
+            <div id="archive-body" class="archive-body"></div>
+            <div class="modal-foot">
+                <button class="modal-btn-danger" onclick="clearArchive()">مسح الكل</button>
+                <button class="modal-btn-sec" onclick="closeArchive()">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
