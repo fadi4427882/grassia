@@ -87,6 +87,10 @@ function closeSettings() {
     document.getElementById('settings-drawer').classList.remove('open');
     document.getElementById('drawer-overlay').classList.remove('show');
 }
+function toggleMobMenu() {
+    // On mobile, the hamburger just opens settings (bottom sheet)
+    openSettings();
+}
 
 // ─────────────────────────────────────────────────────────────────
 //  PAGE SIZE

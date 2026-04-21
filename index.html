@@ -62,6 +62,8 @@
             <button class="hdr-btn" onclick="saveProject()" title="حفظ">💾</button>
             <button class="hdr-btn" onclick="openArchive()" title="الأرشيف">🗄️</button>
             <button class="hdr-btn-primary" onclick="exportPDF()">🖨️ طباعة PDF</button>
+            <!-- Mobile-only hamburger -->
+            <button class="hdr-btn mob-menu-btn" id="mob-menu-btn" onclick="toggleMobMenu()" title="القائمة">☰</button>
         </div>
     </header>
 
@@ -185,6 +187,26 @@
         <span class="fab-icon">+</span>
         <span class="fab-label">وصفة جديدة</span>
     </button>
+
+    <!-- Mobile Action Bar -->
+    <div class="mob-action-bar no-print" id="mob-action-bar">
+        <button class="mob-action-btn" onclick="saveProject()">
+            <span>💾</span>
+            <span>حفظ</span>
+        </button>
+        <button class="mob-action-btn" onclick="openArchive()">
+            <span>🗄️</span>
+            <span>الأرشيف</span>
+        </button>
+        <button class="mob-action-btn" onclick="openSettings()">
+            <span>⚙️</span>
+            <span>الإعدادات</span>
+        </button>
+        <button class="mob-action-btn primary" onclick="exportPDF()">
+            <span>🖨️</span>
+            <span>PDF</span>
+        </button>
+    </div>
 
     <!-- ═══════════════════════════════════════════════════════════
      ARCHIVE MODAL

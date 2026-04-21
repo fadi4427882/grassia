@@ -646,6 +646,43 @@ textarea{resize:none}
 }
 .toast.show{opacity:1;transform:translateY(0)}
 
+/* ── Mobile Action Bar (hidden on desktop) ────────────────── */
+.mob-menu-btn { display: none }
+.mob-action-bar {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #111;
+    border-top: 1px solid var(--ui-border);
+    z-index: 750;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    gap: 6px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,.5);
+}
+.mob-action-btn {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 3px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--ui-border);
+    border-radius: 10px;
+    padding: 9px 4px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 11px; font-weight: 700;
+    color: var(--ui-text);
+    cursor: pointer;
+    transition: .2s;
+}
+.mob-action-btn span:first-child { font-size: 20px; line-height: 1 }
+.mob-action-btn:hover { border-color: var(--accent); color: var(--accent) }
+.mob-action-btn.primary {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+}
+.mob-action-btn.primary:hover { background: var(--accent-light) }
+
 /* ── Print ────────────────────────────────────────────────── */
 @media print{
     @page{margin:0;size:auto}
@@ -660,13 +697,246 @@ textarea{resize:none}
     .recipe-toolbar,.cover-bg-btn{display:none!important}
 }
 
-/* ── Responsive ───────────────────────────────────────────── */
-@media(max-width:900px){
-    .header-book-info{display:none}
-    .workspace{padding:20px 8px 160px}
-    .book-page{transform:scale(.88);transform-origin:top center;margin-bottom:-20mm}
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE — Tablet & Mobile
+══════════════════════════════════════════════════════════════ */
+
+/* ── Tablet (≤ 900px) ─────────────────────────────────────── */
+@media (max-width: 900px) {
+    .header-book-info { display: none }
+    .workspace { padding: 20px 12px 160px }
+
+    /* Scale pages to fit tablet width */
+    .book-page {
+        width: 100% !important;
+        min-height: unset !important;
+        transform: none !important;
+        margin-bottom: 0 !important;
+        border-radius: 12px;
+    }
+
+    /* Recipe grid: stack on smaller screens */
+    .recipe-body-grid {
+        grid-template-columns: 1fr;
+    }
+    .ingredients-col {
+        border-top: 2px solid var(--accent);
+    }
+    .instructions-col {
+        border-left: none;
+        border-bottom: 2px solid #e8e0d0;
+        padding: 8mm 6mm;
+    }
+
+    /* Settings drawer becomes bottom sheet on mobile */
+    .settings-drawer {
+        top: unset;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: 80vh;
+        border-right: none;
+        border-top: 1px solid var(--ui-border);
+        border-radius: 20px 20px 0 0;
+        transform: translateY(100%);
+    }
+    .settings-drawer.open { transform: translateY(0) }
+
+    .recipe-header-strip {
+        padding: 0 6mm;
+        min-height: 18mm;
+    }
+    .rhs-title { font-size: 26px }
+    .cover-title-inp { font-size: 36px }
+    .recipe-meta-row { flex-wrap: wrap }
+    .meta-badge { min-width: 33%; padding: 8px 6px }
+    .recipe-footer { padding: 4mm 6mm; flex-wrap: wrap; gap: 8px }
+    .company-brand-footer { padding: 4mm 6mm }
 }
-@media(max-width:600px){
-    .book-page{transform:scale(.75);transform-origin:top center;margin-bottom:-45mm}
-    .hdr-btn-primary{padding:8px 12px;font-size:12px}
+
+/* ── Mobile (≤ 600px) ─────────────────────────────────────── */
+@media (max-width: 600px) {
+
+    /* ─ Show mobile UI elements ─ */
+    .mob-action-bar { display: flex }
+    .mob-menu-btn { display: flex }
+
+    /* ─ Header ─ */
+    .app-header {
+        padding: 0 10px;
+        gap: 8px;
+    }
+    .header-name { font-size: 14px }
+    .header-logo { font-size: 18px }
+    .stat-pill { display: none }
+
+    /* Hide secondary header buttons, keep only essential ones */
+    .hdr-btn[title="حفظ"],
+    .hdr-btn[title="الأرشيف"] {
+        display: none;
+    }
+    .hdr-btn-primary {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    .hdr-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+    /* ─ Workspace ─ */
+    .workspace {
+        padding: 14px 6px 140px;
+        gap: 28px;
+    }
+
+    /* ─ Book Pages — fluid width ─ */
+    .book-page {
+        width: 100% !important;
+        min-height: unset !important;
+        transform: none !important;
+        margin-bottom: 0 !important;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(0,0,0,.5);
+    }
+
+    /* ─ Cover ─ */
+    .cover-page {
+        height: auto;
+        min-height: 90vw;
+        padding: 0;
+    }
+    .cover-title-inp { font-size: 28px }
+    .cover-subtitle-inp { font-size: 14px }
+    .cover-author-inp { font-size: 16px }
+    .cover-logo { width: 60px; height: 60px }
+    .cover-body { padding: 14mm 8mm }
+
+    /* ─ Recipe Header ─ */
+    .recipe-header-strip {
+        padding: 0 4mm;
+        min-height: 14mm;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .rhs-title { font-size: 22px }
+    .rhs-logo { width: 40px; height: 40px }
+
+    /* ─ Meta Badges ─ */
+    .recipe-meta-row { flex-wrap: wrap }
+    .meta-badge {
+        min-width: 50%;
+        flex: 1 1 50%;
+        padding: 8px 4px;
+    }
+    .mb-icon { font-size: 16px }
+    .mb-value { font-size: 12px; width: 64px }
+
+    /* ─ Recipe Body ─ */
+    .recipe-body-grid {
+        grid-template-columns: 1fr;
+        min-height: unset;
+    }
+    .instructions-col {
+        padding: 6mm 4mm;
+        border-left: none;
+        border-bottom: 1px solid #e8e0d0;
+    }
+    .instructions-textarea { font-size: 15px; line-height: 1.9 }
+    .ingredients-col { border-top: 2px solid var(--accent) }
+    .ingredients-textarea { font-size: 14px; line-height: 1.9 }
+    .dish-photo-area { aspect-ratio: 16/9 }
+
+    /* ─ Footer ─ */
+    .recipe-footer {
+        padding: 3mm 4mm;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .rf-signature, .rf-brand { font-size: 13px }
+
+    /* ─ Company Footer ─ */
+    .company-brand-footer { padding: 3mm 4mm; gap: 6px }
+    .cbf-name { font-size: 11px }
+    .cbf-published { font-size: 6.5px }
+
+    /* ─ Back Cover ─ */
+    .back-cover-page { height: auto; min-height: 90vw }
+    .bc-text-area { padding: 10mm 6mm 8mm }
+
+    /* ─ FAB ─ */
+    .fab-add {
+        bottom: 88px; /* clear the mobile action bar */
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 13px 26px;
+        font-size: 14px;
+        border-radius: 50px;
+    }
+    .fab-add:hover { transform: translateX(-50%) translateY(-2px) }
+
+    /* ─ Recipe Toolbar ─ */
+    .recipe-toolbar {
+        opacity: 1 !important;
+        position: relative;
+        top: unset; left: unset;
+        background: rgba(0,0,0,.5);
+        backdrop-filter: blur(8px);
+        padding: 6px 8px;
+        border-radius: 0 0 8px 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .rtb-btn { font-size: 11px; padding: 4px 8px }
+
+    /* ─ Settings Drawer (Bottom Sheet) ─ */
+    .settings-drawer {
+        top: unset;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: 80vh;
+        border-right: none;
+        border-top: 1px solid var(--ui-border);
+        border-radius: 20px 20px 0 0;
+        transform: translateY(100%);
+        padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+    .settings-drawer.open { transform: translateY(0) }
+    .drawer-body { gap: 10px }
+
+    /* ─ Archive Modal ─ */
+    .modal-box {
+        width: 96%;
+        max-height: 88vh;
+        border-radius: 14px;
+    }
+
+    /* ─ Toast ─ */
+    .toast {
+        bottom: 80px;
+        right: 50%;
+        transform: translateX(50%) translateY(10px);
+        font-size: 13px;
+        padding: 10px 18px;
+    }
+    .toast.show { transform: translateX(50%) translateY(0) }
+
+    /* ─ Password Card ─ */
+    .pw-card {
+        padding: 32px 24px;
+        width: 94%;
+    }
+    .pw-card h1 { font-size: 22px }
+}
+
+/* ── Very small (≤ 380px) ─────────────────────────────────── */
+@media (max-width: 380px) {
+    .rhs-title { font-size: 18px }
+    .cover-title-inp { font-size: 24px }
+    .meta-badge { min-width: 100%; flex: 1 1 100% }
+    .hdr-btn-primary { padding: 7px 10px; font-size: 11px }
 }
