@@ -1,5 +1,5 @@
 /* ================================================================
-   Gracia Kitchen | Professional Recipe Book Creator
+   Grassia Kitchen | Professional Recipe Book Creator
    Beautiful dark UI + Premium print-ready recipe pages
 ================================================================ */
 
@@ -325,16 +325,36 @@ textarea{resize:none}
     min-height:22mm;
     position:relative;z-index:5;
 }
-.rhs-title{
-    flex:1;font-family:'Amiri',serif;font-size:38px;font-weight:700;
-    color:#fff;text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.2);
-    background:transparent;border:none;outline:none;
-    width:100%;
-}
 .rhs-title::placeholder{color:rgba(255,255,255,.4)}
+
+.rhs-title-wrap{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    align-items:center;
+}
+
+.recipe-description-textarea{
+    font-family:'Amiri',serif;
+    font-size:16px;
+    color:rgba(255,255,255,.8);
+    background:transparent;
+    border:none;
+    outline:none;
+    width:100%;
+    text-align:center;
+    resize:none;
+    line-height:1.4;
+}
+
+.recipe-description-textarea::placeholder{
+    color:rgba(255,255,255,.3);
+}
+
 .rhs-logo{
     width:56px;height:56px;border-radius:50%;
-    object-fit:cover;
+    object-fit:contain; /* Changed from cover to show whole logo */
     border:2px solid rgba(255,255,255,.6);
     box-shadow:0 0 18px rgba(0,0,0,.35);
     flex-shrink:0;
@@ -348,6 +368,35 @@ textarea{resize:none}
     gap:0;background:#fff;
     border-bottom:2px solid var(--accent);
     position:relative;z-index:4;
+    flex-wrap:wrap;
+}
+
+.recipe-tags-wrap{
+    width:100%;
+    background:#fafafa;
+    border-bottom:1px solid #eee;
+    padding:6px 18mm;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.tags-label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--accent);
+    font-family:'Cairo',sans-serif;
+    white-space:nowrap;
+}
+
+.recipe-tags-input{
+    flex:1;
+    font-family:'Cairo',sans-serif;
+    font-size:13px;
+    color:#666;
+    background:transparent;
+    border:none;
+    outline:none;
 }
 .meta-badge{
     display:flex;flex-direction:column;align-items:center;
@@ -938,10 +987,70 @@ textarea{resize:none}
     .pw-card h1 { font-size: 22px }
 }
 
-/* ── Very small (≤ 380px) ─────────────────────────────────── */
-@media (max-width: 380px) {
-    .rhs-title { font-size: 18px }
-    .cover-title-inp { font-size: 24px }
-    .meta-badge { min-width: 100%; flex: 1 1 100% }
-    .hdr-btn-primary { padding: 7px 10px; font-size: 11px }
+/* ── Print Fixes ─────────────────────────────────────────── */
+@media print {
+    @page {
+        margin: 0;
+        size: A4 portrait;
+    }
+    
+    html, body {
+        height: auto !important;
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .no-print { display: none !important; }
+
+    .workspace {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        display: block !important;
+        background: none !important;
+    }
+
+    .book-page {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-after: always !important;
+        page-break-inside: avoid !important;
+        page-break-before: auto !important;
+        height: 296.8mm !important; /* Precision height to avoid bleeding */
+        width: 210mm !important;
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    /* Prevent first page from having a break before it */
+    .book-page:first-of-type {
+        page-break-before: avoid !important;
+    }
+
+    /* Fix overlapping footers */
+    .recipe-body-grid {
+        min-height: auto !important;
+        flex: 1 1 auto !important;
+        overflow: hidden !important;
+    }
+
+    .recipe-footer, .company-brand-footer {
+        position: relative !important;
+        margin-top: auto !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* Ensure textareas show full content in print */
+    textarea {
+        overflow: visible !important;
+        height: auto !important;
+    }
 }

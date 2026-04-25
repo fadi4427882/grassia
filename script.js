@@ -1,5 +1,5 @@
 /**
- * Gracia Kitchen | Professional Recipe Book Creator
+ * Grassia Kitchen | Professional Recipe Book Creator
  * Core Logic: Recipe Pages, Settings, Archive, PDF Export
  */
 
@@ -16,8 +16,8 @@ const App = {
     logoData    : null,
     wmData      : null,
     projectKey  : `gk_${Date.now()}`,
-    showPageNums: true,
-    companyName : 'Gracia Kitchen',
+    pageNumsOn  : true,
+    companyName : 'Grassia Kitchen',
     brandingOn  : true,
 };
 
@@ -274,11 +274,19 @@ function buildRecipePage(id, num) {
         <!-- Header Strip with Title & Logo -->
         <div class="recipe-header-strip">
             <img class="rhs-logo" src="${logoSrc}" alt="Logo" style="display:${logoDisp}">
-            <input type="text" class="rhs-title" placeholder="اسم الوصفة..." spellcheck="false">
+            <div class="rhs-title-wrap">
+                <input type="text" class="rhs-title" placeholder="اسم الوصفة..." spellcheck="false">
+                <textarea class="recipe-description-textarea" placeholder="وصف مختصر للوصفة (اختياري)..." rows="1" spellcheck="false"></textarea>
+            </div>
         </div>
 
         <!-- Meta Badges -->
         <div class="recipe-meta-row">
+            <!-- Tags (New) -->
+            <div class="recipe-tags-wrap">
+                <span class="tags-label">🏷️ الوسوم:</span>
+                <input type="text" class="recipe-tags-input" placeholder="مثلاً: صحي، نباتي، سريع..." spellcheck="false">
+            </div>
             <div class="meta-badge">
                 <div class="mb-icon">🕒</div>
                 <div class="mb-label">وقت التحضير</div>
@@ -345,7 +353,7 @@ function buildRecipePage(id, num) {
         <!-- Footer -->
         <div class="recipe-footer">
             <input type="text" class="rf-signature" value="مع محبتي، غراسيا" spellcheck="false">
-            <input type="text" class="rf-brand" value="Gracia Kitchen" spellcheck="false">
+            <input type="text" class="rf-brand" value="Grassia Kitchen" spellcheck="false">
         </div>
 
         <!-- Company Brand Footer -->
@@ -496,9 +504,17 @@ function exportPDF() {
     const opt = {
         margin      : 0,
         filename    : `${title}.pdf`,
-        image       : { type: 'jpeg', quality: 0.97 },
-        html2canvas : { scale: 2, useCORS: true, letterRendering: true, allowTaint: true },
+        image       : { type: 'jpeg', quality: 1.0 },
+        html2canvas : { 
+            scale: 2, 
+            useCORS: true, 
+            letterRendering: true, 
+            allowTaint: true,
+            logging: false,
+            windowWidth: 1200 // Force a consistent width for rendering
+        },
         jsPDF       : { unit: 'mm', format: size, orientation: 'portrait' },
+        pagebreak   : { mode: ['css', 'legacy'] }
     };
 
     html2pdf()
